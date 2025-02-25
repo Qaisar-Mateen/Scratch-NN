@@ -11,8 +11,8 @@ def check_gradients(self, train_X, train_t):
         # Get parameters and gradients for current layer
         W = self.parameters[f'W{l}']
         b = self.parameters[f'b{l}']
-        dW = self.gradients[f'dW{l}']
-        db = self.gradients[f'db{l}']
+        dW = self.grads[f'dW{l}']
+        db = self.grads[f'db{l}']
         
         # Initialize numerical gradients
         numerical_dW = np.zeros_like(W)
@@ -25,10 +25,12 @@ def check_gradients(self, train_X, train_t):
                 
                 # Positive perturbation
                 W[i, j] = original + eps
+                self.fprop(train_X)
                 loss_plus = self.compute_loss(train_X, train_t)
                 
                 # Negative perturbation
                 W[i, j] = original - eps
+                self.fprop(train_X)
                 loss_minus = self.compute_loss(train_X, train_t)
                 
                 # Numerical gradient
@@ -43,10 +45,12 @@ def check_gradients(self, train_X, train_t):
             
             # Positive perturbation
             b[i] = original + eps
+            self.fprop(train_X)
             loss_plus = self.compute_loss(train_X, train_t)
             
             # Negative perturbation
             b[i] = original - eps
+            self.fprop(train_X)
             loss_minus = self.compute_loss(train_X, train_t)
             
             # Numerical gradient
