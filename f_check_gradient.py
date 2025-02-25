@@ -26,12 +26,12 @@ def check_gradients(self, train_X, train_t):
                 # Positive perturbation
                 W[i, j] = original + eps
                 self.fprop(train_X)
-                loss_plus = self.compute_loss(train_X, train_t)
+                loss_plus = self.calculate_loss(train_X, train_t)
                 
                 # Negative perturbation
                 W[i, j] = original - eps
                 self.fprop(train_X)
-                loss_minus = self.compute_loss(train_X, train_t)
+                loss_minus = self.calculate_loss(train_X, train_t)
                 
                 # Numerical gradient
                 numerical_dW[i, j] = (loss_plus - loss_minus) / (2 * eps)
@@ -46,12 +46,12 @@ def check_gradients(self, train_X, train_t):
             # Positive perturbation
             b[i] = original + eps
             self.fprop(train_X)
-            loss_plus = self.compute_loss(train_X, train_t)
+            loss_plus = self.calculate_loss(train_X, train_t)
             
             # Negative perturbation
             b[i] = original - eps
             self.fprop(train_X)
-            loss_minus = self.compute_loss(train_X, train_t)
+            loss_minus = self.calculate_loss(train_X, train_t)
             
             # Numerical gradient
             numerical_db[i] = (loss_plus - loss_minus) / (2 * eps)
