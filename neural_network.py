@@ -94,9 +94,9 @@ class NeuralNetwork():
             if self.activations_func[l] == 'relu':
                 dZ = relu_derivative(Z) * dAL
             elif self.activations_func[l] == 'sigmoid':
-                dZ = sigmoid_derivative(self.net[f'A{l}']) * dAL
+                dZ = sigmoid_derivative(Z) * dAL
             elif self.activations_func[l] == 'tanh':
-                dZ = tanh_derivative(self.net[f'A{l}']) * dAL
+                dZ = tanh_derivative(Z) * dAL
             elif self.activations_func[l] == 'lrelu':
                 dZ = lrelu_derivative(Z, 0.01) * dAL
             elif self.activations_func[l] == 'identity':  # NEW CASE
