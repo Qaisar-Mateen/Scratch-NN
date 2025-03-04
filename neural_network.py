@@ -33,16 +33,84 @@ class NeuralNetwork():
 
           
     def fprop(self, batch_input): 
-        ## add code here  
+        self.net['A0'] = batch_input
+        A_prev = batch_input
+    
+        for l in range(1, self.num_layers + 1):
+            W = self.parameters[f'W{l}']
+            b = self.parameters[f'b{l}']
+        
+            # Linear transformation
+            Z = np.dot(W, A_prev) + b
+            self.net[f'Z{l}'] = Z
+        
+            # Activation
+            if self.activations_func[l] == 'relu':
+                A = relu(Z)
+            elif self.activations_func[l] == 'sigmoid':
+                A = sigmoid(Z)
+            elif self.activations_func[l] == 'tanh':
+                A = tanh(Z)
+            elif self.activations_func[l] == 'lrelu':
+                A = lrelu(Z, 0.01)
+            elif self.activations_func[l] == 'identity':
+                A = Z
+            else:
+                raise ValueError(f"Unsupported activation: '{self.activations_func[l]}'")
+            
+            self.net[f'A{l}'] = A
+            A_prev = A
+    
+        self.net1['A%s' % self.num_layers] = A_prev
+        return A_prev  
              
     def calculate_loss(self, batch_target):       
-        ## add code here  
+        AL = self.net1['A%s' % self.num_layers]
+        m = batch_target.shape[1]
+    
+        # Using MSE loss
+        loss = np.mean(np.square(AL - batch_target))
+        return loss  
         
     def update_parameters(self,epoch):
-       ## add code here  
+        for l in range(1, self.num_layers + 1):
+            self.parameters[f'W{l}'] -= self.learning_rate * self.grads[f'dW{l}']
+            self.parameters[f'b{l}'] -= self.learning_rate * self.grads[f'db{l}']
     
     def bprop(self, batch_target):
-       ## add code here  
+        m = batch_target.shape[1]
+        L = self.num_layers
+    
+        # Initialize backprop
+        dAL = 2 * (self.net1[f'A{L}'] - batch_target) / m
+    
+        for l in reversed(range(1, L + 1)):
+            # Get cached values
+            A_prev = self.net[f'A{l-1}']
+            Z = self.net[f'Z{l}']
+            W = self.parameters[f'W{l}']
+            
+            # Activation derivative
+            if self.activations_func[l] == 'relu':
+                dZ = relu_derivative(Z) * dAL
+            elif self.activations_func[l] == 'sigmoid':
+                dZ = sigmoid_derivative(self.net[f'A{l}']) * dAL
+            elif self.activations_func[l] == 'tanh':
+                dZ = tanh_derivative(self.net[f'A{l}']) * dAL
+            elif self.activations_func[l] == 'lrelu':
+                dZ = lrelu_derivative(Z, 0.01) * dAL
+            elif self.activations_func[l] == 'identity':  # NEW CASE
+                dZ = dAL.copy()
+            else:
+                raise ValueError(f"Unsupported activation: '{self.activations_func[l]}'")
+        
+            # Compute gradients
+            self.grads[f'dW{l}'] = np.dot(dZ, A_prev.T)
+            self.grads[f'db{l}'] = np.sum(dZ, axis=1, keepdims=True)
+        
+            # Compute gradient for next layer
+            if l > 1:
+                dAL = np.dot(W.T, dZ)  
       
     
    
@@ -102,6 +170,8 @@ class NeuralNetwork():
                 minibatch_target =  train_y[:, idx:idx + self.mini_batch_size]
                 
                 if check_grad == True:
+                    self.fprop(minibatch_input) 
+                    self.bprop(minibatch_target)
                     grad_ok = check_gradients(self, minibatch_input, minibatch_target)               
                     if grad_ok == 0:                           
                         print("gradients are not ok!\n")                           
