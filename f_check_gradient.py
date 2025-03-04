@@ -4,8 +4,8 @@ import copy
 
 
 def check_gradients(self, train_X, train_t):
-    eps = 1e-5  # Perturbation epsilon (consider using 1e-7 for higher precision)
-    grad_ok = 1  # Start assuming gradients are OK
+    eps = 1e-5 
+    grad_ok = 1
     
     for l in range(1, self.num_layers + 1):
         # Get parameters and gradients for current layer
@@ -26,12 +26,12 @@ def check_gradients(self, train_X, train_t):
                 # Positive perturbation
                 W[i, j] = original + eps
                 self.fprop(train_X)
-                loss_plus = self.calculate_loss(train_X, train_t)
+                loss_plus = self.calculate_loss(train_t)
                 
                 # Negative perturbation
                 W[i, j] = original - eps
                 self.fprop(train_X)
-                loss_minus = self.calculate_loss(train_X, train_t)
+                loss_minus = self.calculate_loss(train_t)
                 
                 # Numerical gradient
                 numerical_dW[i, j] = (loss_plus - loss_minus) / (2 * eps)
@@ -46,12 +46,12 @@ def check_gradients(self, train_X, train_t):
             # Positive perturbation
             b[i] = original + eps
             self.fprop(train_X)
-            loss_plus = self.calculate_loss(train_X, train_t)
+            loss_plus = self.calculate_loss(train_t)
             
             # Negative perturbation
             b[i] = original - eps
             self.fprop(train_X)
-            loss_minus = self.calculate_loss(train_X, train_t)
+            loss_minus = self.calculate_loss(train_t)
             
             # Numerical gradient
             numerical_db[i] = (loss_plus - loss_minus) / (2 * eps)
