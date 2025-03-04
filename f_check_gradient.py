@@ -68,10 +68,6 @@ def check_gradients(self, train_X, train_t):
         denominator = np.linalg.norm(Numerical_grad) + np.linalg.norm(Analytical_grad)
         diff = numerator / denominator
         
-        # Debug prints (optional)
-        # print(f"Layer {l} numerical grad:", Numerical_grad[:5])
-        # print(f"Layer {l} analytical grad:", Analytical_grad[:5])
-        
         # Check gradient validity
         if diff > eps:
             print(f"Layer {l} gradients are problematic (diff: {diff:.2e})")
