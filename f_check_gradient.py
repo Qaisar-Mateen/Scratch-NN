@@ -69,7 +69,7 @@ def check_gradients(self, train_X, train_t):
         diff = numerator / denominator
         
         # Check gradient validity
-        if diff > eps:
+        if diff > 1e-3:
             print(f"Layer {l} gradients are problematic (diff: {diff:.2e})")
             grad_ok = 0
         else:

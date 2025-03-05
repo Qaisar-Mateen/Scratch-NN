@@ -24,7 +24,7 @@ mini_batch_size = 10
 nn = NeuralNetwork(layer_dim, activations, learning_rate, num_epochs, mini_batch_size)
 
 # train neural network 
-nn.train(train_x, train_t, val_x, val_t)
+nn.train(train_x, train_t, val_x, val_t, hah=True)
 
 
 # test neural network 
