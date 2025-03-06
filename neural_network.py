@@ -68,7 +68,6 @@ class NeuralNetwork():
         AL = self.net1['A%s' % self.num_layers]
         m = batch_target.shape[1]
     
-        # Using MSE loss
         loss = np.mean(np.square(AL - batch_target))
         return loss  
         
@@ -82,7 +81,7 @@ class NeuralNetwork():
         L = self.num_layers
     
         # Initialize backprop
-        dAL = 2 * (self.net1[f'A{L}'] - batch_target) / m
+        dAL =  (2*(self.net1[f'A{L}'] - batch_target)) / m
     
         for l in reversed(range(1, L + 1)):
             # Get cached values
@@ -154,7 +153,7 @@ class NeuralNetwork():
         fig.savefig('plot_gradients.png')
     
 
-    def train(self, train_x, train_y, val_x, val_y):
+    def train(self, train_x, train_y, val_x, val_y, hah = False):
         train_x, train_y = shuffle(train_x, train_y, random_state=0)
         self.initialize_parameters()        
         train_loss = []
@@ -189,9 +188,12 @@ class NeuralNetwork():
             va_loss = self.calculate_loss(val_y)
             val_loss.append(va_loss)              
             print("Epoch %i: training loss %f, validation loss %f" % (i, loss,va_loss))
-        self.plot_loss(train_loss,val_loss)      
-        self.plot_gradients()
-       
+        if hah == True:
+            self.plot_loss(train_loss,val_loss)      
+            self.plot_gradients()
+        return train_loss, val_loss
     
-
-   
+    def test(self, test_x, test_y):
+        self.fprop(test_x)
+        test_loss = self.calculate_loss(test_y)
+        return test_loss, self.net1[f'A{self.num_layers}']
