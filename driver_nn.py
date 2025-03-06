@@ -8,16 +8,18 @@ train_x, train_t, val_x, val_t, test_x, test_t = load_dataset()
 
 # create l-dim network by just adding num of neurons in layer_dim
 # first and last elements represent input and output layers dim
-layer_dim = [1, 50, 1]
+layer_dim = [1, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 1]
 
 # add activation functions name here. 
 # input layer activation function is None
-activations = [None, 'sigmoid', 'identity']
+activations = [None, 'lrelu', 'lrelu', 'lrelu', 'lrelu', 'lrelu', 'lrelu', 'lrelu', 
+'lrelu', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'identity']
+
 assert len(layer_dim) ==  len(activations), "layer dim or activation is missing.."
 
 # hyper parameters of neural network
-learning_rate = 1e-5
-num_epochs = 100
+learning_rate = 1e-2
+num_epochs = 500
 mini_batch_size = 10
 
 
