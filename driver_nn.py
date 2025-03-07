@@ -8,18 +8,26 @@ train_x, train_t, val_x, val_t, test_x, test_t = load_dataset()
 
 # create l-dim network by just adding num of neurons in layer_dim
 # first and last elements represent input and output layers dim
-layer_dim = [1, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 1]
+# layer_dim = [1, 50, 50, 50, 50, 50, 50, 50, 50, 1]# 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 1]
+
+layer_dim = [1, 50, 50, 50, 50, 50, 1]
+            #  50, 50, 50, 50, 50, 1]# 50, 50, 50, 50, 50, 1]
 
 # add activation functions name here. 
 # input layer activation function is None
-activations = [None, 'lrelu', 'lrelu', 'lrelu', 'lrelu', 'lrelu', 'lrelu', 'lrelu', 
-'lrelu', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'identity']
+# activations = [None, 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'tanh', 'identity']
 
-assert len(layer_dim) ==  len(activations), "layer dim or activation is missing.."
+activations = [None, 'lrelu', 'lrelu', 'lrelu', 'lrelu', 'lrelu', # 'lrelu', 'lrelu', 'lrelu', 'lrelu', 'lrelu', 
+'identity'] # 'lrelu', 'lrelu', 'lrelu', 'lrelu', 'lrelu', 'identity']
+
+assert len(layer_dim) ==  len(activations), f"layer dim or activation is missing.. act: {len(activations)}, dim: {len(layer_dim)}"
 
 # hyper parameters of neural network
-learning_rate = 1e-2
-num_epochs = 500
+# for function 2 & 3
+learning_rate = 8.8e-4
+# for function 1
+# learning_rate = 7e-3
+num_epochs = 1500
 mini_batch_size = 10
 
 
@@ -40,8 +48,8 @@ print("testing loss..", np.round(test_loss,4))
 fig = plt.gcf()
 plt.plot(test_x.T, test_output.T, linewidth=3, color='red', label="output")
 plt.plot(test_x.T, test_t.T, linewidth=3, color='blue', linestyle='dashed', label="target")
-plt.title('function 1')
+plt.title('function 3')
 plt.legend()
 plt.grid()
 plt.show()
-fig.savefig('function1_results.png')
+fig.savefig('function3_results try.png')
