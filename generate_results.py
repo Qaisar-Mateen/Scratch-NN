@@ -55,10 +55,10 @@ def generate_fig6():
 # mini_batch_size = 10
 
 def generate_fig5():
-    test_error_sigmoid = [0.05872, 0.06902, 0.09763, 0.10762, 0.10923]
-    test_error_tanh = [0.056213, 0.044345, 0.03815, 0.04221, 0.02421]
-    test_error_relu = [0.05472, 0.04523, 0.03521, 0.020109, 0.021035]
-    test_error_lrelu = [0.054234, 0.04698, 0.03356, 0.031901, 0.02123] 
+    test_error_sigmoid = []
+    test_error_tanh = []
+    test_error_relu = []
+    test_error_lrelu = [] 
     act_func = ['1HL', '2HL', '3HL', '5HL', '10HL']
 
     # Load dataset
